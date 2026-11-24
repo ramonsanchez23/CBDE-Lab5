@@ -1,0 +1,10 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:9.0-ubi9-slim
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+
+volumes:
+  db:
