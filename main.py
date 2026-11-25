@@ -54,50 +54,51 @@ collection.insert_many([
 result = collection.aggregate([
     { '$match': { 'shipdate': { '$lte': 2 } } },
     { '$group': { 
-                    '_id': { 'returnflag': '$returnflag', 'linestatus': '$linestatus' }, 
-                    'sum_qty': {'$sum': '$quantity'},
-                    'sum_base_price': {'$sum': '$extendedprice'},
-                    'sum_disc_price': {'$sum': 
-                        {
-                            '$multiply': 
-                            [
-                                '$extendedprice', 
-                                {
-                                    '$subtract': 
-                                    [
-                                        1, 
-                                        '$discount'
-                                    ]
-                                }
-                            ]
-                        }},
-                    'sum_charge': {'$sum': 
-                        {
-                            '$multiply': 
-                            [
-                                '$extendedprice', 
-                                {
-                                    '$subtract': 
-                                    [
-                                        1, 
-                                        '$discount'
-                                    ]
-                                },
-                                {
-                                    '$add': 
-                                    [
-                                        1, 
-                                        '$tax'
-                                    ]
-                                }
-                            ]
-                        }},
-                    'avg_qty': {'$avg': '$quantity'},
-                    'avg_price': {'$avg': '$extendedprice'},
-                    'avg_disc': {'$avg': '$discount'},
-                    'count_order': {'$sum': 1},
-                }     
-    }
+        '_id': { 'returnflag': '$returnflag', 'linestatus': '$linestatus' }, 
+        'sum_qty': { '$sum': '$quantity' },
+        'sum_base_price': { '$sum': '$extendedprice' },
+        'sum_disc_price': {
+            '$sum': {
+                '$multiply': 
+                [
+                    '$extendedprice', 
+                    {
+                        '$subtract': 
+                        [
+                            1, 
+                            '$discount'
+                        ]
+                    }
+                ]
+            }
+        },
+        'sum_charge': {
+            '$sum': {
+                '$multiply': 
+                [
+                    '$extendedprice', 
+                    {
+                        '$subtract': 
+                        [
+                            1, 
+                            '$discount'
+                        ]
+                    },
+                    {
+                        '$add': 
+                        [
+                            1, 
+                            '$tax'
+                        ]
+                    }
+                ]
+            }
+        },
+        'avg_qty': { '$avg': '$quantity' },
+        'avg_price': { '$avg': '$extendedprice' },
+        'avg_disc': { '$avg': '$discount' },
+        'count_order': { '$sum': 1 },
+    }}
 ])
 
 for item in result:
